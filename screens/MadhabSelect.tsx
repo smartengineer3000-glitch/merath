@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n';
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useAppTheme } from '../hooks/useAppTheme';

@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n';
 import React from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { HeirSelector } from '../components/HeirSelector';

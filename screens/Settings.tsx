@@ -1,3 +1,6 @@
+import { SupportButton } from '../components/SupportButton';
+import { FeedbackButton } from '../components/FeedbackButton';
+import { t } from '../lib/i18n';
 import React from 'react';
 import { View, Text, Switch, ScrollView } from 'react-native';
 import { useTheme } from '../lib/context/ThemeContext';
@@ -17,6 +20,8 @@ export const Settings = ({ navigation }: any) => {
       <Text style={theme.typography.h2}>About</Text>
       <Text style={theme.typography.body}>Merath v1.0 – Islamic Inheritance Calculator</Text>
       <Text style={theme.typography.caption}>Built with Expo & TypeScript</Text>
+      <FeedbackButton />
+      <SupportButton />
     </ScrollView>
   );
 };

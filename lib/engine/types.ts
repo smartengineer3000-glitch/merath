@@ -12,13 +12,27 @@ export type HeirType =
 export interface EstateInput { total: number; funeral: number; debts: number; will: number; }
 export interface HeirEntry { type: HeirType; count: number; }
 export interface Fraction { numerator: number; denominator: number; }
-export interface Share { heirType: HeirType; name: string; amount: number; fraction: Fraction; colour: string; }
+export interface Share {
+  heirType: HeirType;
+  name: string;
+  amount: number;
+  fraction: Fraction;
+  colour: string;
+}
+export interface CalculationStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+  action: string;
+  details: Record<string, any>;
+}
 export interface CalculationResult {
   netTotal: number;
   confidence: number;
   confidenceExplanation: string;
   shares: Share[];
-  steps: string[];
+  steps: CalculationStep[];
   awlApplied?: boolean;
   raddApplied?: boolean;
+  specialNotes?: string[];
 }

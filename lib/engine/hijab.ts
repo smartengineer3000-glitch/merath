@@ -1,4 +1,4 @@
-import { HeirEntry, HeirType } from './types';
+import { HeirType, HeirEntry } from './types';
 
 export function applyHijab(heirs: HeirEntry[]): HeirEntry[] {
   const present = new Set(heirs.map(h => h.type));
