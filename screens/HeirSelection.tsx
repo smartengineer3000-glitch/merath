@@ -9,12 +9,10 @@ import { useCalc } from '../lib/context/CalcContext';
 export const HeirSelection = ({ navigation }: any) => {
   const theme = useAppTheme();
   const { state, dispatch } = useCalc();
-
   const onNext = () => {
     dispatch({ type: 'SET_HEIRS', payload: state.heirs });
     navigation.navigate('Results');
   };
-
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ padding: theme.spacing.md }}>
