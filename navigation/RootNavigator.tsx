@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer, useLinking } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CalcProvider } from '../lib/context/CalcContext';
 import { EstateSetup } from '../screens/EstateSetup';

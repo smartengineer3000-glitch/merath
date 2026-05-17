@@ -64,7 +64,7 @@ export const Results = ({ navigation }: any) => {
     result.shares.forEach((s: any) => {
       text += `${s.name}: $${s.amount.toFixed(2)} (${s.fraction.numerator}/${s.fraction.denominator})\n`;
     });
-    Clipboard.setStringAsync?.(text) || Alert.alert('Copied', 'Results copied to clipboard');
+    require('expo-clipboard').setStringAsync(text); Alert.alert('Copied', 'Results copied to clipboard');
   };
 
   const totalEstate = result?.netTotal || 0;
