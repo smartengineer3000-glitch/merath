@@ -3,7 +3,7 @@
  * Helper Functions and Inheritance System Constants
  */
 
-import { MadhhabType, HeirType } from "./types";
+import { MadhhabType, HeirType, MadhhabConfig, MadhhabRules } from "./types";
 
 /**
  * قائمة أسماء الورثة بالعربية
@@ -40,12 +40,6 @@ export const MADHAB_NAMES: Record<MadhhabType, string> = {
   hanbali: "المذهب الحنبلي",
 };
 
-/**
- * التحقق من صحة المذهب
- */
-export function isValidMadhab(madhab: any): madhab is MadhhabType {
-  return ["shafii", "hanafi", "maliki", "hanbali"].includes(madhab);
-}
 
 /**
  * التحقق من صحة نوع الوارث
@@ -298,3 +292,260 @@ const priority: Record<HeirType, number> = {
     treasury: 100,
     shared_siblings: 9,
   };
+
+  /**
+   * قاعدة البيانات الفقهية الشاملة
+   * Comprehensive Fiqh Database
+   *
+   * تحتوي على جميع القواعس والأحكام الفقهية للمذاهب الأربعة
+   */
+
+  export const FIQH_DATABASE = {
+    // ====== معلومات المذاهب ======
+    madhabs: {
+      shafii: {
+        code: "shafii",
+        name: "المذهب الشافعي",
+        description: "المذهب الشافعي - من أشهر المذاهب الإسلامية",
+        color: "#FF6B6B",
+        icon: "🕌",
+        rules: {
+          grandfather_with_siblings: "hijab",
+          mother_with_father_children: "sixth",
+          mother_with_father_only: "third",
+          spouse_radd: false,
+          umariyyah_rule: "first",
+        },
+      },
+      hanafi: {
+        code: "hanafi",
+        name: "المذهب الحنفي",
+        description: "المذهب الحنفي - الأكثر اتباعاً",
+        color: "#4ECDC4",
+        icon: "📖",
+        rules: {
+          grandfather_with_siblings: "hijab",
+          mother_with_father_children: "sixth",
+          mother_with_father_only: "third",
+          spouse_radd: true,
+          umariyyah_rule: "first",
+        },
+      },
+      maliki: {
+        code: "maliki",
+        name: "المذهب المالكي",
+        description: "المذهب المالكي - المذهب الرسمي للمغرب",
+        color: "#45B7D1",
+        icon: "⚖️",
+        rules: {
+          grandfather_with_siblings: "musharak",
+          mother_with_father_children: "sixth",
+          mother_with_father_only: "third",
+          spouse_radd: true,
+          umariyyah_rule: "first",
+        },
+      },
+      hanbali: {
+        code: "hanbali",
+        name: "المذهب الحنبلي",
+        description: "المذهب الحنبلي - المذهب الرسمي للسعودية",
+        color: "#F7DC6F",
+        icon: "📜",
+        rules: {
+          grandfather_with_siblings: "musharak",
+          mother_with_father_children: "sixth",
+          mother_with_father_only: "third",
+          spouse_radd: false,
+          umariyyah_rule: "first",
+        },
+      },
+    },
+
+    // ====== الفروض الأساسية ======
+    provisions: {
+      husband: {
+        name: "الزوج",
+        arabicName: "الزوج",
+        shares: {
+          without_children: { numerator: 1, denominator: 2 }, // 1/2
+          with_children: { numerator: 1, denominator: 4 }, // 1/4
+        },
+      },
+      wife: {
+        name: "الزوجة",
+        arabicName: "الزوجة",
+        shares: {
+          without_children: { numerator: 1, denominator: 4 }, // 1/4
+          with_children: { numerator: 1, denominator: 8 }, // 1/8
+        },
+      },
+      son: {
+        name: "الابن",
+        arabicName: "الابن",
+        type: "asaba",
+        shares: {},
+      },
+      daughter: {
+        name: "البنت",
+        arabicName: "البنت",
+        shares: {
+          alone: { numerator: 1, denominator: 2 }, // 1/2
+          with_sister: { numerator: 2, denominator: 3 }, // 2/3
+        },
+      },
+      father: {
+        name: "الأب",
+        arabicName: "الأب",
+        shares: {
+          with_children: { numerator: 1, denominator: 6 }, // 1/6
+          without_children: "asaba",
+        },
+      },
+      mother: {
+        name: "الأم",
+        arabicName: "الأم",
+        shares: {
+          with_children: { numerator: 1, denominator: 6 }, // 1/6
+          without_children: { numerator: 1, denominator: 3 }, // 1/3
+        },
+      },
+      grandfather: {
+        name: "الجد",
+        arabicName: "الجد الأب",
+        shares: {
+          with_children: { numerator: 1, denominator: 6 }, // 1/6
+          without_children: "asaba",
+        },
+      },
+      grandmother: {
+        name: "الجدة",
+        arabicName: "الجدة الأب",
+        shares: {
+          default: { numerator: 1, denominator: 6 }, // 1/6
+        },
+      },
+      full_brother: {
+        name: "الأخ الشقيق",
+        arabicName: "الأخ الشقيق",
+        type: "asaba",
+      },
+      full_sister: {
+        name: "الأخت الشقيقة",
+        arabicName: "الأخت الشقيقة",
+        shares: {
+          alone: { numerator: 1, denominator: 2 }, // 1/2
+          with_sister: { numerator: 2, denominator: 3 }, // 2/3
+        },
+      },
+    },
+
+    // ====== قواعس الحجب ======
+    hijabRules: {
+      shafii: [
+        {
+          hijabber: "son",
+          hijabbed: [
+            "full_brother",
+            "full_sister",
+            "half_brother_paternal",
+            "half_sister_paternal",
+            "nephew_from_brother",
+            "niece_from_brother",
+          ],
+          type: "complete",
+        },
+        {
+          hijabber: "father",
+          hijabbed: ["grandfather"],
+          type: "complete",
+        },
+        {
+          hijabber: "mother",
+          hijabbed: ["grandmother"],
+          type: "complete",
+        },
+        {
+          hijabber: "father",
+          hijabbed: ["mother"],
+          type: "partial",
+          reason: "from_third_to_sixth",
+        },
+      ],
+      hanafi: [
+        {
+          hijabber: "son",
+          hijabbed: ["full_brother", "half_brother_paternal"],
+          type: "complete",
+        },
+        {
+          hijabber: "father",
+          hijabbed: ["grandfather"],
+          type: "complete",
+        },
+      ],
+      maliki: [
+        {
+          hijabber: "son",
+          hijabbed: ["full_brother", "half_brother_paternal"],
+          type: "complete",
+        },
+        {
+          hijabber: "father",
+          hijabbed: ["grandfather"],
+          type: "complete",
+        },
+      ],
+      hanbali: [
+        {
+          hijabber: "son",
+          hijabbed: ["full_brother", "half_brother_paternal"],
+          type: "complete",
+        },
+        {
+          hijabber: "father",
+          hijabbed: ["grandfather"],
+          type: "complete",
+        },
+      ],
+    },
+
+    // ====== الحالات الخاصة ======
+    specialCases: {
+      umariyyah: {
+        description: "العمرية: حالة خاصة للأم مع الأب والزوج/الزوجة",
+        shafii: "third_of_remainder",
+        hanafi: "third_of_remainder",
+        maliki: "sixth",
+        hanbali: "third_of_remainder",
+      },
+      awl: {
+        description: "العول: عندما يتجاوز مجموع الفروض التركة",
+      },
+      radd: {
+        description: "الرد: عندما يبقى من التركة بعد الفروض",
+      },
+    },
+
+    // ====== الثوابت الحسابية ======
+    constants: {
+      PRECISION: 10,
+      TOLERANCE: 0.0001,
+      MIN_AMOUNT: 0.01,
+      DEFAULT_ESTATE: 120000,
+    },
+  };
+
+  // ====== دالة مساعدة للحصول على معلومات المذهب ======
+  export function getMadhhabConfig(madhab: string): MadhhabConfig | null {
+    return (FIQH_DATABASE.madhabs as any)[madhab] || null;
+  }
+
+  // ====== دالة مساعدة للحصول على قواعس الحجب ======
+  export function getHijabRules(madhab: string): any[] {
+    return (FIQH_DATABASE.hijabRules as any)[madhab] || [];
+  }
+
+  // ====== دالة مساعدة للتحقق من صحة المذهب ======
+  export function isValidMadhab(madhab: string): boolean {
+    return madhab in FIQH_DATABASE.madhabs;
+  }
