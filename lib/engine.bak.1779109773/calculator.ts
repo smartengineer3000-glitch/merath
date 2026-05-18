@@ -21,7 +21,7 @@ import type {
   CalculationResult,
   HeirShare,
 } from "./types";
-import { HijabSystem } from "./hijab";
+import { HijabSystem } from "./hijab-system";
 
 interface HeirShareObject {
   key: string;
