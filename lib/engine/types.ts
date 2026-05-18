@@ -171,3 +171,5 @@ export interface AuditEntry {
   component?: string;
 }
 export type Madhab = "hanafi" | "maliki" | "shafii" | "hanbali";
+export interface HeirEntry { type: HeirType; count: number; }
+export interface EstateInput { total: number; funeral: number; debts: number; will: number; }

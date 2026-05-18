@@ -10,7 +10,7 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { InheritanceCalculationEngine } from "../lib/inheritance";
-import type { EstateData, HeirsData } from "../lib/inheritance/types";
+import type { EstateData, HeirsData } from "../lib/engine/types";
 
 describe("Real-World Islamic Inheritance Scenarios", () => {
   /**

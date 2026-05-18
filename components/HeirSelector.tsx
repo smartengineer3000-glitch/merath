@@ -33,7 +33,7 @@ export const HeirSelector: React.FC<Props> = ({ heirs, onHeirsChange }) => {
     onHeirsChange(newHeirs);
   };
 
-  const blockedTypes = new Set(applyHijab(heirs.filter(h => h.count > 0)).map(h => h.type));
+  const blockedTypes = new Set(applyHijab(heirs.filter((h: any) => h.count > 0)).map((h: any) => h.type));
 
   return (
     <ScrollView>

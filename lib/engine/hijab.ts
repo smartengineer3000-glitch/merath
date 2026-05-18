@@ -51,3 +51,12 @@ export class HijabSystem {
     return validTypes.includes(heirType);
   }
 }
+export function applyHijab(heirs: any[]) {
+  const system = new HijabSystem("hanafi");
+  const heirsRecord: Record<string, number | undefined> = {};
+  heirs.forEach((h: any) => { if (h.count > 0) heirsRecord[h.type] = h.count; });
+  const result = system.applyHijab(heirsRecord);
+  return Object.entries(result.heirs)
+    .filter(([_, count]) => count !== undefined && count > 0)
+    .map(([type, count]) => ({ type: type as any, count }));
+}

@@ -100,8 +100,6 @@ export class EnhancedInheritanceCalculationEngine {
 
         
     // Ensure success and map grandfather key for tests
-    if (shares) { shares = shares.map(s => s.key === "paternal_grandfather" ? { ...s, key: "grandfather" } : s) }; 
-    if (!success) { success = true; }
     return {
           success: false,
           madhab: this.madhab,
@@ -1445,4 +1443,9 @@ export class EnhancedInheritanceCalculationEngine {
 
     return { valid: true };
   }
+}
+
+export function calculateInheritance(madhab: any, estate: any, heirs: any) {
+  const engine = new EnhancedInheritanceCalculationEngine(madhab, estate, heirs);
+  return engine.calculate();
 }
