@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CalcProvider } from '../lib/context/CalcContext';
@@ -12,21 +12,17 @@ import { History } from '../screens/History';
 
 const Stack = createNativeStackNavigator();
 
-const linking = {
-  prefixes: ['merath://'],
-  config: {
-    screens: {
-      EstateSetup: 'setup',
-      Results: 'results',
-    },
-  },
+const screenOptions = {
+  headerShown: false,
+  animation: 'slide_from_right' as any,
+  animationDuration: 300,
 };
 
 export default function RootNavigator() {
   return (
     <CalcProvider>
-      <NavigationContainer linking={linking}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={screenOptions}>
           <Stack.Screen name="EstateSetup" component={EstateSetup} />
           <Stack.Screen name="MadhabSelect" component={MadhabSelect} />
           <Stack.Screen name="HeirSelection" component={HeirSelection} />

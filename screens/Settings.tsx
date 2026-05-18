@@ -1,3 +1,6 @@
+import { usePremium } from '../lib/context/PremiumContext';
+import { getCalculationCount } from '../lib/services/UsageStats';
+import { useState, useEffect } from 'react';
 import { SupportButton } from '../components/SupportButton';
 import { FeedbackButton } from '../components/FeedbackButton';
 import { t } from '../lib/i18n';
@@ -7,6 +10,9 @@ import { useTheme } from '../lib/context/ThemeContext';
 import { useAppTheme } from '../hooks/useAppTheme';
 
 export const Settings = ({ navigation }: any) => {
+  const { isPremium, togglePremium } = usePremium();
+  const [calcCount, setCalcCount] = useState(0);
+  useEffect(() => { getCalculationCount().then(setCalcCount); }, []);
   const { isDark, toggleTheme } = useTheme();
   const theme = useAppTheme();
 
@@ -22,6 +28,11 @@ export const Settings = ({ navigation }: any) => {
       <Text style={theme.typography.caption}>Built with Expo & TypeScript</Text>
       <FeedbackButton />
       <SupportButton />
-    </ScrollView>
+      <Text style={{fontSize:12, marginTop:8}}>Calculations performed: {calcCount}</Text>
+  <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 12}}>
+    <Text>Premium (Unlock legal reports & fiqh notes)</Text>
+    <Switch value={isPremium} onValueChange={togglePremium} />
+  </View>
+</ScrollView>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { I18nManager } from 'react-native';
+import { PremiumProvider } from './lib/context/PremiumContext';
 import { ThemeProvider } from './lib/context/ThemeContext';
 import RootNavigator from './navigation/RootNavigator';
 import { ErrorBoundary } from './ErrorBoundary';
@@ -15,9 +16,9 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider>
+      <PremiumProvider><ThemeProvider>
         <RootNavigator />
-      </ThemeProvider>
+      </ThemeProvider></PremiumProvider>
     </ErrorBoundary>
   );
 }

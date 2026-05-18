@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Animated } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
 
 type PieData = { label: string; value: number; color: string };
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => ({
   x: cx + r * Math.cos((angle - 90) * Math.PI / 180),
@@ -18,7 +20,14 @@ const describeArc = (cx: number, cy: number, r: number, startAngle: number, endA
 
 export const PieChart = ({ data, size = 200 }: { data: PieData[]; size?: number }) => {
   const total = data.reduce((sum, d) => sum + d.value, 0);
+  const animValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animValue, { toValue: 1, duration: 1200, useNativeDriver: false }).start();
+  }, [data]);
+
   if (total === 0) return null;
+
   let cumulativeAngle = 0;
 
   return (
@@ -28,7 +37,16 @@ export const PieChart = ({ data, size = 200 }: { data: PieData[]; size?: number 
           const sliceAngle = (item.value / total) * 360;
           const path = describeArc(size/2, size/2, size/2 - 5, cumulativeAngle, cumulativeAngle + sliceAngle);
           cumulativeAngle += sliceAngle;
-          return <Path key={index} d={path} fill={item.color} stroke="#fff" strokeWidth={2} />;
+          return (
+            <AnimatedPath
+              key={index}
+              d={path}
+              fill={item.color}
+              stroke="#fff"
+              strokeWidth={2}
+              opacity={animValue}
+            />
+          );
         })}
       </Svg>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
